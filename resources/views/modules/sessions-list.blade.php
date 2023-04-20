@@ -56,8 +56,3 @@
 </div>
 </x-template>
 @endsection
-<script>
-    document.querySelector('form').addEventListener('submit', function() {
-        window.location.href = '/';
-    });
-</script>

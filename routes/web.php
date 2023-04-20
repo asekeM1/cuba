@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\AuthController;
+use Illuminate\Support\Facades\Auth;
 
 
 /*
@@ -19,14 +20,21 @@ use App\Http\Controllers\AuthController;
 Route::get('/', function () {
     return view('modules.home');
 });
-Route::get('/login', [AuthController::class, 'login'])->name('login');
-Route::get('/register', [AuthController::class, 'showForm'])->name('register');
+Route::get('/register', [AuthController::class, 'showRegistrationForm'])->name('register');
 Route::post('/register', [AuthController::class, 'register']);
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [AuthController::class, 'login']);
+Route::post('/logout', function () {
+    Auth::logout();
+    return redirect('/');
+})->name('logout');
 
-Route::get('/sessions', [SessionController::class, 'index'])->name('index');
+Route::get('/sessions', [SessionController::class, 'index'])->name('index')->middleware('auth');
 Route::delete('/modules/{session}', [SessionController::class, 'destroy'])->name('destroy');
-Route::delete('/delete/all', [SessionController::class, 'deleteAll'])->name('destroy');
+Route::delete('/delete/all', [SessionController::class, 'deleteAll'])->name('deleteAll');
+Route::get('/modules/sessions-list', function () {
+    return view('modules.sessions-list');
+})->middleware('auth');
 
 
 

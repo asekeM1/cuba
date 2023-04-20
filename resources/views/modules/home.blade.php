@@ -13,7 +13,7 @@
                 <img src="./img/happy.svg" alt="img title">
             </div>
             <div class="py-2 ml-10">
-                <h1 class="h6">Привет, {{auth()->user()->name}}!</h1>
+                <h1 class="h6">Привет, Lorem Ipsum</h1>
                 <p class="text-white text-md"><a href="/sessions">Тут</a> можно глянуть список сессий, удалить одну или все</p>
             </div>
         </div>

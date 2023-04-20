@@ -10,6 +10,8 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Controller;
+
 class AuthController extends Controller
 {
     use RegistersUsers;
@@ -21,11 +23,6 @@ class AuthController extends Controller
         $this->middleware('guest');
     }
 
-    public function showForm()
-    {
-        return view('auth.register');
-    }
-
     protected function validator(array $data)
     {
         return Validator::make($data, [
@@ -34,7 +31,10 @@ class AuthController extends Controller
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
     }
-
+    public function showRegistrationForm()
+    {
+        return view('auth.register');
+    }
     protected function create(array $data)
     {
         return User::create([
@@ -43,8 +43,21 @@ class AuthController extends Controller
             'password' => Hash::make($data['password']),
         ]);
     }
-    public function login(){
+    public function showLoginForm()
+    {
         return view('auth.login');
+    }
+    public function login(Request $request)
+    {
+        $credentials = $request->only('email', 'password');
+
+        if (Auth::attempt($credentials)) {
+            // Авторизация успешна
+            return redirect()->intended('/');
+        } else {
+            // Авторизация не удалась
+            return back()->withErrors(['email' => 'Неверный email или пароль']);
+        }
     }
     public function register(Request $request)
     {
@@ -56,13 +69,10 @@ class AuthController extends Controller
 
         return redirect($this->redirectPath());
     }
-    public function logout(Request $request)
+    public function logout()
     {
-        auth()->logout();
+        Auth::logout();
 
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-
-        return redirect()->route('auth.login');
+        return redirect('/login');
     }
 }
