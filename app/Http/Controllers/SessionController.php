@@ -2,40 +2,36 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Session;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Jenssegers\Agent\Agent;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Session;
+use Illuminate\Support\Facades\DB;
 
 class SessionController extends Controller
 {
     public function index()
     {
         $user = auth()->user();
-        $sessions = $user ? $user->sessions : [];
 
-        return view('sessions.index', compact('sessions'));
-    }
+        if ($user) {
+            $sessions = $user->sessions()->orderBy('created_at', 'desc')->get();
 
-    public function terminateAll()
-    {
-        $user = auth()->user();
-        $currentSessionId = session()->getId();
-
-        foreach ($user->sessions as $session) {
-            if ($session->id !== $currentSessionId) {
-                $session->delete();
-            }
+            return view('modules.sessions-list', compact('sessions'));
+        } else {
+            return redirect()->route('login');
         }
-
-        return redirect()->route('sessions.index')
-            ->with('success', 'All sessions except the current one have been terminated.');
     }
 
-    public function terminate(Session $session)
-    {
+    public function destroy(Session $session){
         $session->delete();
-
-        return back()->with('success', 'Session has been terminated.');
+        return redirect('/')->with('message', 'Сессия успешно удалена!');
     }
+
+    public function deleteAll()
+    {
+        DB::table('sessions')->delete();
+
+        return redirect()->back()->with('success', 'Все сессии успешно удалены!');
+    }
+
 }

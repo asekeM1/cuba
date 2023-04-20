@@ -10,12 +10,10 @@ class Session extends Model
     use HasFactory;
     protected $fillable = [
         'user_id',
+        'session_id',
         'ip_address',
-        'user_agent',
-        'last_activity',
+        'started_at',
     ];
-
-    protected $table = 'sessions';
 
     public function user()
     {

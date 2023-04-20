@@ -9,14 +9,14 @@ class CreateSessionsTable extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
+    public function up()
     {
         Schema::create('sessions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained();
-            $table->string('ip_address')->nullable();
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->string('ip_address', 45)->nullable();
             $table->text('user_agent')->nullable();
-            $table->timestamp('last_activity')->nullable();
+            $table->text('payload');
             $table->timestamps();
         });
     }
