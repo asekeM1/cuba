@@ -6,7 +6,7 @@
         <h1 class="text-2xl font-bold mb-4">все сессии</h1>
         <div class="flex justify-between mb-6">
             <h2 class="text-lg font-semibold">список сессий</h2>
-            <form action="{{ route('delete-all-sessions') }}" method="POST">
+            <form action="/delete/all" method="POST">
                 @csrf
                 @method('DELETE')
                 <button class="bg-red-500 text-white px-4 py-2 rounded-lg" type="submit">Закончить все сесиии</button>

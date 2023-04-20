@@ -26,7 +26,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::get('/sessions', [SessionController::class, 'index'])->name('index');
 Route::delete('/modules/{session}', [SessionController::class, 'destroy'])->name('destroy');
-Route::get('/delete-all-sessions', [SessionController::class, 'deleteAll'])->name('deleteAll');
+Route::delete('/delete/all', [SessionController::class, 'deleteAll'])->name('destroy');
 
 
 

@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use App\Models\Session;
 use Illuminate\Support\Facades\DB;
 
@@ -24,14 +22,21 @@ class SessionController extends Controller
 
     public function destroy(Session $session){
         $session->delete();
-        return redirect('/')->with('message', 'Сессия успешно удалена!');
+        return redirect('/sessions')->with('message', 'Сессия успешно удалена!');
     }
 
     public function deleteAll()
-    {
-        DB::table('sessions')->delete();
 
-        return redirect()->back()->with('success', 'Все сессии успешно удалены!');
+    {
+        $sessionId = session()->getId();
+
+        foreach (session()->all() as $key => $value) {
+            if ($key !== '_token' && $key !== '_previous' && $key !== $sessionId) {
+                session()->forget($key);
+            }
+        }
+
+        return redirect()->back();
     }
 
 }
