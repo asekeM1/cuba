@@ -21,6 +21,7 @@ class LogSession
             $session->user_id = $user->id;
             $session->ip_address = $request->ip();
             $session->user_agent = $request->header('User-Agent');
+            $session->current_session = base64_encode(serialize($request->session()->getId()));
             $session->payload = base64_encode(serialize($request->session()->all()));
             $session->save();
         }

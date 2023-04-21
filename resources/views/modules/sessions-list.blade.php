@@ -6,6 +6,7 @@
         <h1 class="text-2xl font-bold mb-4">все сессии</h1>
         <div class="flex justify-between mb-6">
             <h2 class="text-lg font-semibold">список сессий</h2>
+            <h2 class="text-lg font-semibold">Текущая сессия - {{$session_now}}</h2>
             <form action="/delete/all" method="POST">
                 @csrf
                 @method('DELETE')
@@ -20,6 +21,7 @@
                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Дата</th>
                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">IP</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Сессия</th>
                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Действие</th>
                     </tr>
                     </thead>
@@ -34,6 +36,9 @@
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="text-sm text-gray-500">{{ $session->ip_address }}</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap"  style="word-break: break-all;">
+                                <div class="text-sm text-gray-500">{{ $session->current_session }}</div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <form action="modules/{{$session->id}}" method="POST">
